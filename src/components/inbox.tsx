@@ -1,8 +1,9 @@
 import React, { RefObject, useEffect, useRef, useState, useContext } from 'react';
 import Message from './message';
 import ChatBox from './chatbox';
-import { Container, Stack } from '@mui/material';
+import { CircularProgress, Container, Divider, Stack } from '@mui/material';
 import { ChatGPTContext } from '../context/ChatContext';
+import UserHeader from './userHeader';
 
 // For loading
 const TypingDots = () => {
@@ -15,8 +16,25 @@ const TypingDots = () => {
   );
 };
 
+type AudioProps = {
+  audio: string | undefined;
+  role: string;
+  isLoadingSpeech: boolean;
+};
+
+const Audio: React.FC<AudioProps> = ({ audio, role, isLoadingSpeech }) => {
+  if (role === 'user') {
+    return <React.Fragment></React.Fragment>;
+  }
+  if (isLoadingSpeech && !audio) {
+    return <CircularProgress />;
+  }
+  return <audio src={audio} controls />;
+};
+
 const Inbox: React.FC = () => {
-  const { isLoading, messages, updateMessage } = useContext(ChatGPTContext);
+  const { tutor, setTutor, isLoading, isLoadingSpeech, messages, updateMessage, speechData } =
+    useContext(ChatGPTContext);
 
   const chatBoxRef: RefObject<HTMLDivElement> = useRef(null);
 
@@ -33,19 +51,22 @@ const Inbox: React.FC = () => {
       className="bg-neutral-900"
       sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
     >
+      <UserHeader tutor={tutor} setTutor={setTutor} />
+      <Divider />
       <Container sx={{ flex: 1, overflowY: 'scroll', padding: 0 }} ref={chatBoxRef}>
-        <Stack spacing={1}>
+        <Stack spacing={1} sx={{ marginBottom: '20px' }}>
           {messages.map((m, i) => (
             <Message key={`${i}-id`} {...m}>
               {m.content}
+              <div className="mt-3">
+                <Audio audio={m.audio} role={m.role} isLoadingSpeech={isLoadingSpeech} />
+              </div>
             </Message>
           ))}
-          {isLoading ? (
-            <Message role="">
+          {isLoading && (
+            <Message>
               <TypingDots />
             </Message>
-          ) : (
-            <React.Fragment />
           )}
         </Stack>
       </Container>

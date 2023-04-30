@@ -1,16 +1,9 @@
-import {
-  ChatCompletionRequestMessage,
-  Configuration,
-  CreateChatCompletionResponse,
-  OpenAIApi,
-} from 'openai';
+import { ChatCompletionRequestMessage, CreateChatCompletionResponse } from 'openai';
 import _ from 'lodash';
+import querystring from 'querystring';
+import axios from 'axios';
 
-const configuration = new Configuration({
-  organization: 'org-cgKIAgB8vxwoWiXMzMRAlR0I',
-  apiKey: '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',
-});
-const openai = new OpenAIApi(configuration);
+const baseUrl = process.env.REACT_APP_BACKEND;
 
 export const getChatGPTResponse = async (
   content: ChatCompletionRequestMessage[]
@@ -18,10 +11,35 @@ export const getChatGPTResponse = async (
   if (_.isEmpty(content)) {
     return null;
   }
-  const completion = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages: content,
-  });
-  console.log(completion.data.choices[0].message);
-  return completion.data;
+  const response = await axios.post(`${baseUrl}/gpt/chatCompletion`, { content });
+  return response.data;
+};
+
+export const getSpeech = async (
+  text: string,
+  voice: string,
+  ssmlGender: string,
+  languageName: string
+) => {
+  if (!text) {
+    return;
+  }
+  const obj = {
+    text,
+    voice,
+    ssmlGender,
+    languageName,
+  };
+
+  const queryParams = querystring.stringify(obj);
+
+  try {
+    const response = await axios.get(`${baseUrl}/synthesize-speech?${queryParams}`, {
+      responseType: 'blob',
+    });
+    const url = URL.createObjectURL(response.data);
+    return url;
+  } catch (error) {
+    console.error(error);
+  }
 };

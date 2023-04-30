@@ -6,7 +6,7 @@ import styles from './styles';
 import './styles.css';
 
 interface Props {
-  role: string;
+  role?: string;
   children: ReactNode;
 }
 
@@ -31,7 +31,10 @@ const Message: React.FC<Props> = ({ role, children }) => {
           },
         }}
       >
-        <Typography sx={{ whiteSpace: 'pre-wrap' }} component="div">
+        <Typography
+          sx={{ whiteSpace: 'pre-wrap', display: 'flex', flexDirection: 'column' }}
+          component="div"
+        >
           {children}
         </Typography>
       </CardContent>
