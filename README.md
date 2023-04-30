@@ -1,4 +1,6 @@
-Frontend chatbot that allow user to learn languages with chatgpt. 
+# Talk GPT UI
+
+Frontend application chatbot that allow user to learn languages with chatgpt. 
 
 Default prompt: `I want you to act as an ${language} teacher that want to teach me proper ${language}. Regardless of what language I use you will answer in ${language}. You goal is to keep the conversation going as long as possible. You can give out new topics to talk about and you can also give me questions to answer.`,
 
