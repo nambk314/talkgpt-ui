@@ -70,7 +70,6 @@ export const ChatGPTProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   useEffect(() => {
     setPrompt(getDefaultPrompt(tutor));
-    console.log(`getDefaultPrompt(tutor): ${JSON.stringify(getDefaultPrompt(tutor))}`);
     setMessages([]);
     setQueryBody([]);
     setSpeech({ text: '', index: -1 });
@@ -105,7 +104,6 @@ export const ChatGPTProvider: React.FC<{ children: ReactNode }> = ({ children })
   } = useQuery(['chatGPT', queryBody], () => getChatGPTResponse(queryBody));
 
   useEffect(() => {
-    console.log(`data: ${JSON.stringify(gptData)}`);
     if (gptData) {
       updateMessage(gptData?.choices[0].message as ChatCompletionRequestMessage);
       setQueryBody([]);
@@ -128,7 +126,6 @@ export const ChatGPTProvider: React.FC<{ children: ReactNode }> = ({ children })
         return newState;
       });
       setSpeech({ text: '', index: -1 });
-      console.log(`speechData: ${speechData}`);
     }
   }, [speechData]);
 
