@@ -8,7 +8,9 @@ Note: This application will require a backend to work properly.
 
 To start the Frontend application:
 
-### `npm start`
+`npm i`
+
+`npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
