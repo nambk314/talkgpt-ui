@@ -26,7 +26,7 @@ export const TUTORS = [
   },
   {
     name: 'LingLing',
-    voide: 'cmn-CN',
+    voice: 'cmn-CN',
     ssmlGender: 'FEMALE',
     languageName: 'cmn-CN-Standard-D',
   },
